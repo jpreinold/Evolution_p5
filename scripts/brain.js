@@ -3,7 +3,7 @@ class Brain {
     this.x = x;
     this.y = y;
     this.status = searching;
-    this.searchRadius = 100;
+    this.searchRadius = 150;
     this.moveLocation = [-1, -1];
     this.foodCoord = [-1, -1];
     this.eating = false;
@@ -20,6 +20,7 @@ class Brain {
       this.moveLocation[1] = getRandInt(0,2) == 1 ? this.y + getRandInt(0, this.searchRadius / 2) : -1 * (this.y + getRandInt(0, this.searchRadius / 2));
     }
     this.status = travel;
+    //console.log(this.moveLocation);
 
   }
 
@@ -33,10 +34,9 @@ class Brain {
         break;
       }
     }
-    return -1;
   }
 
-  eat(foodCoord){
+  eat(){
     let x = this.foodCoord[0];
     let y = this.foodCoord[1];
     for(let i = numFood - 1; i >= 0; i--){
@@ -46,8 +46,8 @@ class Brain {
 
         }
         food.splice(i, 1);
-        //this.status = searching;
-        //this.moveLocation = [-1, -1];
+        this.status = searching;
+        this.moveLocation = [-1, -1];
         break;
       }
     }
@@ -58,11 +58,12 @@ class Brain {
     let x = this.moveLocation[0];
     let y = this.moveLocation[1];
     for(let i = 0; i < numFood; i++){
-      if(food[i].x != x && food[i].y != y){
+      if(food[i].x == x && food[i].y == y){
         eaten = false;
         break;
       }
     }
+    if(eaten) this.setMoveLocation();
     return eaten;
   }
 
@@ -113,6 +114,9 @@ class Brain {
         }
 
 
+      } else {
+        //console.log(true);
+        this.setMoveLocation();
       }
     }
 

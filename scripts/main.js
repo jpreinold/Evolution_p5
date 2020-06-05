@@ -1,5 +1,5 @@
-let numOrganisms = 3;
-let numHealthyFood = 10;
+let numOrganisms = 0;
+let numHealthyFood = 20;
 let numPoisonousFood = 0;
 let numFood = numHealthyFood + numPoisonousFood;
 let food = [];
@@ -103,15 +103,21 @@ function mouseClicked(){
 
 function draw(){
   background(0);
+
+  if(random() > .975){
+    food.push(new Food(getRandInt(0, gameWidth), getRandInt(0, gameHeight), 0));
+    numFood++;
+  }
+
   for(let i = numOrganisms - 1; i >= 0; i--){
     if(organisms[i].diameter > 0){
       organisms[i].render();
       if(organisms[i].lifeSpan % (500 / gameSpeed) == 0){
         if(organisms[i].diameter > (maxOrganismDiameter + minOrganismDiameter) / 2){
-          organisms.push(new Organism(organisms[i].x, organisms[i].y, organisms[i].color));
-          organisms.push(new Organism(organisms[i].x, organisms[i].y, organisms[i].color));
-          numOrganisms += 2;
-          teamSizes.set(organisms[i].color, teamSizes.get(organisms[i].color) + 2);
+          //organisms.push(new Organism(organisms[i].x, organisms[i].y, organisms[i].color));
+          //organisms.push(new Organism(organisms[i].x, organisms[i].y, organisms[i].color));
+          //numOrganisms += 2;
+          //teamSizes.set(organisms[i].color, teamSizes.get(organisms[i].color) + 2);
           //console.log(teamSizes);
         }
       }
@@ -133,7 +139,7 @@ function draw(){
       organisms[i].diameter += 20;
       if( organisms[i].diameter > maxOrganismDiameter ) organisms[i].diameter = maxOrganismDiameter;
     } else {
-      organisms[i].diameter -= .2;
+      organisms[i].diameter -= .05;
     }
   }
 
