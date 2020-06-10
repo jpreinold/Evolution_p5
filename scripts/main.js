@@ -1,6 +1,7 @@
 let numOrganisms = 0;
 let numHealthyFood = 20;
 let numPoisonousFood = 0;
+let foodSpawnLikelihood = .99;
 let numFood = numHealthyFood + numPoisonousFood;
 let food = [];
 let organisms = [];
@@ -10,6 +11,8 @@ let maxOrganismDiameter = 50;
 let minOrganismDiameter = 3;
 let gameWidth = 500;
 let gameHeight = 500;
+let hungerColor = "#43fa68"; // color for hunger stat
+let reproductionColor = "#ff66c9";  // color for reproduction stat
 let colors = ["#ff3333", "#ff6633", "#ffff33", "#33ff33", "#3399ff", "#9933ff"];
 let team = 0;
 let numberOfTeams = colors.length;
@@ -104,13 +107,13 @@ function mouseClicked(){
 function draw(){
   background(0);
 
-  if(random() > .975){
+  if(random() > foodSpawnLikelihood){
     food.push(new Food(getRandInt(0, gameWidth), getRandInt(0, gameHeight), 0));
     numFood++;
   }
 
   for(let i = numOrganisms - 1; i >= 0; i--){
-    if(organisms[i].diameter > 0){
+    if(organisms[i].hunger < 100){
       organisms[i].render();
       if(organisms[i].lifeSpan % (500 / gameSpeed) == 0){
         if(organisms[i].diameter > (maxOrganismDiameter + minOrganismDiameter) / 2){
@@ -136,10 +139,10 @@ function draw(){
 
   for(let i = 0; i < numOrganisms; i++){
     if(organisms[i].brain.eating == true){
-      organisms[i].diameter += 20;
+      organisms[i].hunger -= 20;
+      if(organisms[i].hunger < 0) organisms[i].hunger = 0;
       if( organisms[i].diameter > maxOrganismDiameter ) organisms[i].diameter = maxOrganismDiameter;
     } else {
-      organisms[i].diameter -= .05;
     }
   }
 
